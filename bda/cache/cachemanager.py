@@ -24,6 +24,9 @@
 __author__ = """Robert Niederreiter <rnix@squarewave.at>"""
 __docformat__ = 'plaintext'
 
+import logging
+logger = logging.getLogger('bda.cache.cachemanager')
+
 import time
 from zope.interface import implements
 from zope.component import adapts
@@ -54,11 +57,19 @@ class CacheManager(object):
     def getData(self, func, key, force_reload=False, args=[], kwargs={}):
         """Return cached data or call func, cache return value and return it.
         """
+        from_cache = True
+        
         ret = self.get(key, force_reload)
         
         if ret is None:
+            from_cache = False
             ret = func(*args, **kwargs)
             self.set(key, ret)
+        
+        if from_cache:
+            logger.info('getDataFromCache %1.5f') % (end - start)
+        else:
+            logger.info('getDataFromFunction %1.5f') % (end - start)
         
         return ret
     
