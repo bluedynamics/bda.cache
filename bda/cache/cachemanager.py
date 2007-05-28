@@ -67,9 +67,9 @@ class CacheManager(object):
             self.set(key, ret)
         
         if from_cache:
-            logger.info('getDataFromCache %1.5f') % (end - start)
+            logger.info('getDataFromCache')
         else:
-            logger.info('getDataFromFunction %1.5f') % (end - start)
+            logger.info('getDataFromFunction')
         
         return ret
     
