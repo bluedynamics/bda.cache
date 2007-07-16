@@ -66,11 +66,6 @@ class CacheManager(object):
             ret = func(*args, **kwargs)
             self.set(key, ret)
         
-        if from_cache:
-            logger.info('getDataFromCache')
-        else:
-            logger.info('getDataFromFunction')
-        
         return ret
     
     def get(self, key, force_reload=False):
