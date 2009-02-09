@@ -8,7 +8,9 @@ __docformat__ = 'plaintext'
 
 from interfaces import ICacheProvider
 from interfaces import ICacheManager
-from interfaces import ICacheProviderFactory
+
+from nullcache import NullCache
+from nullcache import NullCacheManager
 
 from fscache import FSCache
 from fscache import FSCacheManager

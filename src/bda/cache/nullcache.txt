@@ -1,0 +1,25 @@
+Check if this stuff does nothing :)
+
+  >>> from bda.cache import ICacheManager
+  >>> from bda.cache import NullCache
+  >>> provider = NullCache()
+  >>> provider.reset()
+  >>> provider.size()
+  0
+
+  >>> provider.keys()
+                
+  >>> provider.values()
+    
+  >>> provider.get('foo')
+  >>> provider.__getitem__('foo')
+  >>> provider.__setitem__('foo', object())
+  >>> provider.__delitem__('foo')
+  
+  >>> manager = ICacheManager(provider)
+  >>> manager.setTimeout(0)
+  >>> manager.getData(lambda: pass, 'foo')  
+  >>> manager.get('foo')
+  >>> manager.set('foo', object())
+  >>> manager.rem('foo')
+  >>> del manager['foo']

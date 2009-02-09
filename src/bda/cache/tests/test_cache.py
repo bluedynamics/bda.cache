@@ -14,6 +14,7 @@ optionflags = doctest.NORMALIZE_WHITESPACE | \
               doctest.REPORT_ONLY_FIRST_FAILURE
 
 TESTFILES = [
+    '../nullcache.txt',
     '../fscache.txt',
     '../memcached.txt',
     '../cachemanager.txt',

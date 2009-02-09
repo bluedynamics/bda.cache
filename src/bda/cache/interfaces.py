@@ -45,9 +45,17 @@ class ICacheManager(Interface):
     
     def set(key, item, set_creationtime=True):
         """Store an item with key to cache.
+        
+        XXX: get rid of ``set_creationtime``
         """
     
     def rem(key):
+        """Remove item with key from cache if exists.
+        
+        Legacy. Replaced by ``__delitem__``
+        """
+    
+    def __delitem__(key):
         """Remove item with key from cache if exists.
         """
 
@@ -90,6 +98,10 @@ class ICacheProvider(Interface):
         
         Always return None.
         """
+
+class INullCacheProvider(ICacheProvider):
+    """Marker
+    """
 
 class IFSCacheProvider(ICacheProvider):
     """Marker
