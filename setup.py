@@ -38,13 +38,12 @@ setup(name='bda.cache',
       zip_safe=False,
       install_requires=[
           'setuptools',  
-          'interlude',
-          # several zope eggs missing, coming soon (atm fake-eggs
+          'zope.app.component',
       ],
       extras_require={
           'test': [
               'interlude',
-              # several zope eggs missing, coming soon (atm fake-eggs            
+              'zope.app.testing',
           ]
       },
       entry_points="""
