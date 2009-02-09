@@ -25,8 +25,8 @@ TESTFILES = [
 if os.environ.get('MEMCACHEDBIN', None):
     TESTFILES += ['../memcached.txt',]
 else:
-    logger.debug('Can not test memcached module. No path to memcached binary '
-                 'given in test environment (MEMCACHEDBIN).')
+    logger.info('Can not test memcached module. No path to memcached binary '
+                'given in test environment (MEMCACHEDBIN).')
 
 def test_suite():
     setUp()
