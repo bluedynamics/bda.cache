@@ -11,8 +11,8 @@
   />
   
   <adapter
-	for=".interfaces.IMemcacheProvider"
-	factory=".memcache.MemcacheManager"
+	for=".interfaces.IMemcachedProvider"
+	factory=".memcache.MemcachedManager"
   />
 
 </configure>

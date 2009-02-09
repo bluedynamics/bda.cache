@@ -1,8 +1,14 @@
+Testing of memcached based implementation
+=========================================
+
 first import some useful stuff.
 
     >>> from bda.cache.memcached import Memcached
+    >>> from bda.cache.memcached import MemcachedManager
+    >>> from bda.cache.interfaces import ICacheManager
     >>> import os, time
     >>> from subprocess import Popen
+    >>> from zope.component import provideAdapter
 
 We need to start a memcached server.
 
@@ -11,6 +17,9 @@ We need to start a memcached server.
     True
     
     >>> p = Popen([memcachedbin])
+
+test the provider
+-----------------
 
 Inititialize.    
 
@@ -53,14 +62,77 @@ It should flush the memcached!
     
 Test the timeout.
     
-    >>> mc.timeout = 4
+    >>> mc.timeout = 2
     >>> mc['3'] = 3
-    >>> time.sleep(1)
     >>> mc['3']
     3
     
-    >>> time.sleep(5)
+    >>> time.sleep(3)
     >>> print mc['3']
+    None
+    
+    >>> mc.timeout = 0
+
+test the manager
+----------------
+
+The manager doesn't do any fancy things, it just delegates to the provider.
+
+    >>> provideAdapter(MemcachedManager)
+    >>> manager = ICacheManager(mc)
+    >>> manager
+    <bda.cache.memcached.MemcachedManager object at ...>
+    
+first test set and get
+    
+    >>> manager.set('AnotherKey', 'AnotherValue')
+    >>> manager.get('AnotherKey')
+    'AnotherValue'
+   
+force reload on get results always in None
+    
+    >>> print manager.get('AnotherKey', True)
+    None
+    
+ok, now lets test the real interesting part, the getData method.
+
+    >>> counter = 0
+    >>> def square(x):
+    ...     global counter
+    ...     counter += 1
+    ...     return x*x
+    
+    >>> manager.getData(square, str(4), args=[4])
+    16
+    
+    >>> counter
+    1
+
+    >>> manager.getData(square, str(4), args=[4])
+    16
+    
+    >>> counter
+    1
+    
+test force_reload
+
+    >>> manager.getData(square, str(4), True, args=[4])
+    16
+    
+    >>> counter
+    2
+    
+    >>> manager.getData(square, str(5), True, args=[5])
+    25
+    
+    >>> counter
+    3
+    
+    >>> manager.get('5')
+    25
+    
+    >>> del manager['5']
+    >>> print manager.get('5')
     None
     
     >> interact(locals())    

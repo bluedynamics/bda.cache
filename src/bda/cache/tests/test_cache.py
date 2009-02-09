@@ -9,6 +9,8 @@ from pprint import pprint
 from zope.testing import doctest
 from zope.app.testing.placelesssetup import setUp, tearDown
 from zope.configuration.xmlconfig import XMLConfig
+import logging
+logger = logging.getLogger('bda.cache')
 
 optionflags = doctest.NORMALIZE_WHITESPACE | \
               doctest.ELLIPSIS | \
@@ -22,6 +24,9 @@ TESTFILES = [
 
 if os.environ.get('MEMCACHEDBIN', None):
     TESTFILES += ['../memcached.txt',]
+else:
+    logger.debug('Can not test memcached module. No path to memcached binary '
+                 'given in test environment (MEMCACHEDBIN).')
 
 def test_suite():
     setUp()

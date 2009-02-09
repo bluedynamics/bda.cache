@@ -97,6 +97,7 @@ class MemcachedManager(object):
         self.cache[key] = item
     
     def rem(self, key):
+        """deprecated, use __delitem___"""
         del self.cache[key]
     
     def __delitem__(self, key):
