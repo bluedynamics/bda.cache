@@ -1,6 +1,7 @@
 __author__ = """Robert Niederreiter <rnix@squarewave.at>"""
 __docformat__ = 'plaintext'
 
+import os
 import unittest
 import interlude
 import zope.app.component
@@ -16,9 +17,11 @@ optionflags = doctest.NORMALIZE_WHITESPACE | \
 TESTFILES = [
     '../nullcache.txt',
     '../fscache.txt',
-    '../memcached.txt',
     '../cachemanager.txt',
 ]
+
+if os.environ.get('MEMCACHEDBIN', None):
+    TESTFILES += ['../memcached.txt',]
 
 def test_suite():
     setUp()
