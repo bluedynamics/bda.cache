@@ -2,9 +2,9 @@ __author__ = """Robert Niederreiter <rnix@squarewave.at>"""
 __docformat__ = 'plaintext'
 
 import unittest
+import interlude
 import zope.app.component
 from pprint import pprint
-from interact import interact
 from zope.testing import doctest
 from zope.app.testing.placelesssetup import setUp, tearDown
 from zope.configuration.xmlconfig import XMLConfig
@@ -24,7 +24,7 @@ def test_suite():
         doctest.DocFileSuite(
             file, 
             optionflags=optionflags,
-            globs={'interact': interact,
+            globs={'interact': interlude.interact,
                    'pprint': pprint},
         ) for file in TESTFILES
     ])

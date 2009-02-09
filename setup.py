@@ -37,7 +37,8 @@ setup(name='bda.cache',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'setuptools',      
+          'setuptools',  
+          'interlude',
           # several zope eggs missing, coming soon (atm fake-eggs
       ],
       extras_require={

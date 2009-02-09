@@ -97,21 +97,29 @@ This works because there always a '.' is added to the end of a key, so that
     {'key': 'data'}
     >>> cache['anythingelse']
     {'key': 'data'}
-    >>> os.listdir(cachepath)
-    ['user', 'user.', 'anythingelse.']
+    >>> res = os.listdir(cachepath)
+    >>> res.sort()
+    >>> res
+    ['anythingelse.', 'user', 'user.']
 
 Now look for the cached objects keys...
-    >>> cache.keys()
-    ['user.section.msg0', 'user.section.msg1', 'user.section', 'user', 'anythingelse']
+    >>> res = cache.keys()
+    >>> res.sort()
+    >>> res
+    ['anythingelse', 'user', 'user.section', 'user.section.msg0', 'user.section.msg1']
 
 ..and values
-    >>> cache.values()
-    [<email.MIMEText.MIMEText instance at ...>, {'anykey': 'anydata'}, {'onemorekey': 'onemorevalue'}, {'key': 'data'}, {'key': 'data'}]
+    >>> res = cache.values()
+    >>> res.sort()
+    >>> res
+    [<email.MIMEText.MIMEText instance at ...>, {'anykey': 'anydata'}, {'key': 'data'}, {'key': 'data'}, {'onemorekey': 'onemorevalue'}]
 
 Remove some objects an take a look at the filesystem structure:
     >>> del cache['user']
-    >>> os.listdir(cachepath)
-    ['user', 'anythingelse.']
+    >>> res = os.listdir(cachepath)
+    >>> res.sort()
+    >>> res
+    ['anythingelse.', 'user']
 
     >>> del cache['user.section.msg0']
     >>> os.listdir(os.path.join(cachepath, 'user', 'section'))
@@ -169,8 +177,11 @@ Finally fill in some objects and test the reset funcion.
     >>> cache['1.2.3.1'] = obj
     >>> cache['1.2.3.2'] = obj
     >>> cache['1.2.3.3'] = obj
-    >>> cache.keys()
-    ['1', '2', '3', '1.1', '1.2', '1.3', '1.1.1', '1.1.2', '1.1.3', '1.2.1', '1.2.2', '1.2.3', '1.2.3.1', '1.2.3.2', '1.2.3.3']
+    >>> res = cache.keys()
+    >>> res.sort()
+    >>> res
+    ['1', '1.1', '1.1.1', '1.1.2', '1.1.3', '1.2', '1.2.1', '1.2.2', '1.2.3', '1.2.3.1', '1.2.3.2', '1.2.3.3', '1.3', '2', '3']
+
     >>> cache.reset()
     >>> cache.keys()
     []
