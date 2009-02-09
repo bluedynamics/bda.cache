@@ -1,0 +1,179 @@
+Test for fscache module.
+
+Imports
+    >>> import os
+    >>> from bda.cache import FSCache
+
+Determine current working directory
+    >>> curpath = os.path.abspath(os.path.curdir)
+
+Directory path for cache test
+    >>> cachepath = os.path.join(curpath, 'cachetest')
+
+Try to create Cache. Fails because not abspath.
+    >>> cache = FSCache('notabspath')
+    Traceback (most recent call last):
+      ...
+    FSCacheException: Cannot initialize cache. '...' is not an absolute path.
+
+Try to create Cache. Fails because not exist.
+    >>> cache = FSCache('/notabspath')
+    Traceback (most recent call last):
+      ...
+    FSCacheException: Cannot initialize cache. Directory '...' not exists.
+
+Now create cachepath as file.
+    >>> file = open(cachepath, 'w')
+    >>> file.write('hallo')
+    >>> file.close()
+
+Try to create Cache. Fails because not a directory.
+    >>> cache = FSCache(cachepath)
+    Traceback (most recent call last):
+      ...
+    FSCacheException: Cannot initialize cache. '...' is not a Directory.
+
+Now remove this file
+    >>> os.remove(cachepath)
+
+And create the cache directory
+    >>> os.mkdir(cachepath) 
+
+Now start the tests with the FSCache
+    >>> cache = FSCache(cachepath)
+    >>> print cache
+    <bda.cache.fscache.FSCache object at ...>
+
+Check if interface is implemented.
+    >>> from bda.cache.interfaces import ICacheProvider
+    >>> ICacheProvider.providedBy(cache)
+    True
+
+And create objects we want to cache, f.e. MIMEText objects, and store it to
+the cache.
+    >>> from email.MIMEText import MIMEText
+    >>> for i in range(2):
+    ...     msg = MIMEText('bodytext')
+    ...     cache['user.section.msg%s' % str(i)] = msg
+    ...
+
+Now read this objects.
+    >>> msg = cache['user.section.msg0']
+    >>> msg
+    <email.MIMEText.MIMEText instance at ...>
+    >>> msg1 = cache['user.section.msg1']
+    >>> msg1
+    <email.MIMEText.MIMEText instance at ...>
+
+Now try to get an inexistent object from cache, returns None, ...
+    >>> obj = cache['notavailable']
+
+...or even a default object.
+    >>> obj = cache.get('notavailable', 'works')
+    >>> obj
+    'works'
+
+Now overwrite an existing entry
+    >>> obj = {'anykey': 'anydata'}
+    >>> cache['user.section.msg1'] = obj
+    >>> obj = cache['user.section.msg1']
+    >>> obj
+    {'anykey': 'anydata'}
+
+Now take an object and use a subpart of an existing key as key for this object.
+This works because there always a '.' is added to the end of a key, so that
+'user.section' results in 'user/section.' and 'user.section.object' results in 
+'user/section/object.', ...
+    >>> cache['user.section'] = {'onemorekey': 'onemorevalue'}
+    >>> obj = cache['user.section']
+    >>> obj
+    {'onemorekey': 'onemorevalue'}
+
+...and do test this also at 'cachedir'
+    >>> obj = {'key': 'data'}
+    >>> cache['user'] = obj
+    >>> cache['anythingelse'] = obj
+    >>> cache['user']
+    {'key': 'data'}
+    >>> cache['anythingelse']
+    {'key': 'data'}
+    >>> os.listdir(cachepath)
+    ['user', 'user.', 'anythingelse.']
+
+Now look for the cached objects keys...
+    >>> cache.keys()
+    ['user.section.msg0', 'user.section.msg1', 'user.section', 'user', 'anythingelse']
+
+..and values
+    >>> cache.values()
+    [<email.MIMEText.MIMEText instance at ...>, {'anykey': 'anydata'}, {'onemorekey': 'onemorevalue'}, {'key': 'data'}, {'key': 'data'}]
+
+Remove some objects an take a look at the filesystem structure:
+    >>> del cache['user']
+    >>> os.listdir(cachepath)
+    ['user', 'anythingelse.']
+
+    >>> del cache['user.section.msg0']
+    >>> os.listdir(os.path.join(cachepath, 'user', 'section'))
+    ['msg1.']
+
+    >>> del cache['user.section.msg1']
+    >>> os.listdir(os.path.join(cachepath, 'user', 'section'))
+    Traceback (most recent call last):
+      ...
+    OSError: [Errno 2] No such file or directory: '...'
+
+    >>> os.listdir(os.path.join(cachepath, 'user'))
+    ['section.']
+
+A Test on recursive reverse deletion.
+    >>> cache['user.whatever.object'] = 'something'
+    >>> cache['user.whatever.object']
+    'something'
+    >>> del cache['user.section']
+    >>> os.listdir(os.path.join(cachepath, 'user'))
+    ['whatever']
+    >>> del cache['user.whatever.object']
+    >>> os.listdir(cachepath)
+    ['anythingelse.']
+    >>> del cache['anythingelse']
+    >>> os.listdir(cachepath)
+    []
+    >>> cache['1.2.3.4'] = 'value'
+    >>> os.listdir(cachepath)
+    ['1']
+    >>> os.listdir(os.path.join(cachepath, '1'))
+    ['2']
+    >>> os.listdir(os.path.join(cachepath, '1', '2'))
+    ['3']
+    >>> os.listdir(os.path.join(cachepath, '1', '2', '3'))
+    ['4.']
+    >>> del cache['1.2.3.4']
+    >>> os.listdir(cachepath)
+    []
+
+Finally fill in some objects and test the reset funcion.
+    >>> obj = ['something']
+    >>> cache['1'] = obj
+    >>> cache['2'] = obj
+    >>> cache['3'] = obj
+    >>> cache['1.1'] = obj
+    >>> cache['1.2'] = obj
+    >>> cache['1.3'] = obj
+    >>> cache['1.1.1'] = obj
+    >>> cache['1.1.2'] = obj
+    >>> cache['1.1.3'] = obj
+    >>> cache['1.2.1'] = obj
+    >>> cache['1.2.2'] = obj
+    >>> cache['1.2.3'] = obj
+    >>> cache['1.2.3.1'] = obj
+    >>> cache['1.2.3.2'] = obj
+    >>> cache['1.2.3.3'] = obj
+    >>> cache.keys()
+    ['1', '2', '3', '1.1', '1.2', '1.3', '1.1.1', '1.1.2', '1.1.3', '1.2.1', '1.2.2', '1.2.3', '1.2.3.1', '1.2.3.2', '1.2.3.3']
+    >>> cache.reset()
+    >>> cache.keys()
+    []
+
+And finally remove the cachedir to cover the tracks :)
+    >>> os.rmdir(cachepath)

@@ -6,9 +6,8 @@ Copyright
 
 Copyright (c) 2006-2007 by:
     Blue Dynamics Alliance
-        * Klein & Partner KEG, Austria
         * Squarewave Computing Robert Niederreiter, Austria
-
+        * Klein & Partner KEG, Austria
 
 Overview
 --------
