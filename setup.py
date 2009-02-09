@@ -29,7 +29,7 @@ setup.py bdist_egg
 from setuptools import setup, find_packages
 import sys, os
 
-version = '1.0'
+version = '1.0.1'
 
 setup(
     name='bda.cache',
