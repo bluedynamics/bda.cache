@@ -2,8 +2,8 @@
 #
 # Copyright (c) 2006-2007 by:
 #     Blue Dynamics Alliance
-#         * Klein & Partner KEG, Austria
 #         * Squarewave Computing Robert Niederreiter, Austria
+#         * Klein & Partner KEG, Austria
 #
 # GNU General Public License (GPL)
 #
@@ -29,7 +29,7 @@ setup.py bdist_egg
 from setuptools import setup, find_packages
 import sys, os
 
-version = '1.0.1'
+version = '1.1'
 
 setup(
     name='bda.cache',
