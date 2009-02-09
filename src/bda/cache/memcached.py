@@ -14,12 +14,11 @@ This module provides fuctionallity for caching objects in a memcache server.
 
 from zope.interface import implements
 from zope.component import adapts
-
 from interfaces import ICacheManager
 from interfaces import ICacheProvider
 from interfaces import CacheException
-
 from interfaces import IMemcachedProvider
+from memcache import Client 
 
 class MemcachedException(CacheException): pass
 
@@ -27,32 +26,43 @@ class Memcached(object):
     
     implements(IMemcachedProvider)
     
-    def __init__(self, foo):
-        pass
-    
+    def __init__(self, servers):
+        """Initialize memcached.
+        @param servers: an array of servers. Servers can be passed in two forms:
+            1. Strings of the form host:port, which implies a default weight of 1.
+            2. Tuples of the form host:port, where C{weight} is
+            an integer weight value.
+        """
+        self._client = Client(servers)    
     def reset(self):
-        pass
+        self._client.flush_all()
     
     def size(self):
-        pass
-        
+        bytes = 0
+        stats = self._client.get_stats()
+        for name, stat in stats:
+            bytes+=int(stat['bytes'])
+        return bytes
+
     def keys(self):
-        pass
+        raise NotImplementedError, \
+              "It's not possible to fetch keys from memcached"
                 
     def values(self):
-        pass
+        raise NotImplementedError, \
+              "It's not possible to fetch values from memcached"
     
     def get(self, key, default=None):
-        pass
+        value = self._client.get(key)
     
     def __getitem__(self, key):
-        pass
+        return self._client.get(key)
     
     def __setitem__(self, key, object):
-        pass
+        self._client.set(key, object)
     
     def __delitem__(self, key):
-        pass
+        self._client.delete(key)
 
 class MemcachedManager(object):
     

@@ -1,1 +1,39 @@
->>> from bda.cache.memcached import Memcached
+first import some useful stuff.
+
+    >>> from bda.cache.memcached import Memcached
+    >>> import os
+    >>> from subprocess import Popen
+
+We need to start a memcached server.
+
+    >>> memcachedbin = os.environ.get('MEMCACHEDBIN', None)
+    >>> memcachedbin is not None
+    True
+    
+    >>> p = Popen([memcachedbin])
+
+Start simple tests.    
+
+    >>> mc = Memcached(['localhost:11211'])
+    >>> mc
+    <bda.cache.memcached.Memcached object at ...>
+    
+    >>> mc['somekey'] = 'SomeValue'
+    >>> mc['somekey']
+    'SomeValue'
+    
+    >>> mc.size()
+    65
+    
+    >>> del mc['somekey']
+    >>> print mc['somekey']
+    None
+    
+    >>> interact(locals())
+    
+    
+   
+ Stop memcached.
+
+    >>> os.kill(p.pid, 5)
+    
