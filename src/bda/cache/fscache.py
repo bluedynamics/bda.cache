@@ -244,6 +244,9 @@ class FSCacheManager(object):
             del creationmap[key]
             self.cache['creationmap'] = creationmap
     
+    def __delitem__(self, key):
+        self.rem(key)
+    
     def _isTimedOut(self, key):
         """Return wether the item with key is timed out or not.
         """

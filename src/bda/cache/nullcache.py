@@ -70,3 +70,6 @@ class NullCacheManager(object):
     
     def rem(self, key):
         pass
+    
+    def __delitem__(self, key):
+        pass

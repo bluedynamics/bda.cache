@@ -98,3 +98,6 @@ class MemcachedManager(object):
     
     def rem(self, key):
         del self.cache[key]
+    
+    def __delitem__(self, key):
+        del self.cache[key]
