@@ -13,7 +13,12 @@ This module provides fuctionallity for caching objects in a memcache server.
 """
 
 from zope.interface import implements
+from zope.component import adapts
+
+from interfaces import ICacheManager
+from interfaces import ICacheProvider
 from interfaces import CacheException
+
 from interfaces import IMemcacheProvider
 
 class MemcacheException(CacheException): pass
@@ -48,3 +53,33 @@ class Memcache(object):
     
     def __delitem__(self, key):
         pass
+
+class MemcacheManager(object):
+    
+    implements(ICacheManager)
+    adapts(ICacheProvider)
+    
+    def __init__(self, context):
+        self.cache = context
+    
+    def setTimeout(self, timeout):
+        pass # XXX: write log entry ?
+    
+    def getData(self, func, key, force_reload=False, args=[], kwargs={}):
+        ret = self.get(key, force_reload)
+        if ret is None:
+            ret = func(*args, **kwargs)
+            self.set(key, ret)
+        return ret
+    
+    def get(self, key, force_reload=False):
+        if force_reload:
+            del self.cache[key]
+            return None
+        return self.cache.get(key, None)
+    
+    def set(self, key, item):
+        self.cache[key] = item
+    
+    def rem(self, key):
+        del self.cache[key]

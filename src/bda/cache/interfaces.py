@@ -86,10 +86,10 @@ class ICacheProvider(Interface):
         Always return None.
         """
 
-class IFSCacheProvider(CacheProvider):
+class IFSCacheProvider(ICacheProvider):
     """Marker
     """
 
-class IMemcacheProvider(CacheProvider):
+class IMemcacheProvider(ICacheProvider):
     """Marker
     """

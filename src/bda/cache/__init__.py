@@ -10,6 +10,12 @@ from interfaces import ICacheProvider
 from interfaces import ICacheManager
 
 from fscache import FSCache
+from fscache import FSCacheManager
 from fscache import FSCacheException
 
+from memcache import Memcache
+from memcache import MemcacheManager
+from memcache import MemcacheException
+
+# XXX: remove me, some shit left in BlueWebMail
 from cachemanager import CacheManager

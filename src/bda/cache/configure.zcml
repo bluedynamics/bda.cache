@@ -2,12 +2,12 @@
 
   <adapter
 	for=".interfaces.IFSCacheProvider"
-	factory=".cachemanager.FSCacheManager"
+	factory=".fscache.FSCacheManager"
   />
   
   <adapter
 	for=".interfaces.IMemcacheProvider"
-	factory=".cachemanager.MemcacheManager"
+	factory=".memcache.MemcacheManager"
   />
 
 </configure>
