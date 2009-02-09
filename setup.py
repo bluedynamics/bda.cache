@@ -38,6 +38,7 @@ setup(name='bda.cache',
       zip_safe=False,
       install_requires=[
           'setuptools',  
+          'python-memcached',
           'zope.app.component',
       ],
       extras_require={
