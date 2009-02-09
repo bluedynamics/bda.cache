@@ -8,6 +8,8 @@ __docformat__ = 'plaintext'
 
 from zope.interface import Interface
 
+class CacheException(Exception): pass
+
 class ICacheVary(Interface):
     """This interface describes an API for manipulating objects inside a cache.
     """
@@ -25,7 +27,8 @@ class ICacheManager(Interface):
         """
     
     def getData(func, key, force_reload=False, args=[], kwargs={}):
-        """Return cached data or call func, cache return value and return data.
+        """Return cached data, or call func, cache it's return value and return
+        it.
         """
     
     def get(key, force_reload=False):
@@ -42,7 +45,6 @@ class ICacheManager(Interface):
     def rem(key):
         """Remove item with key from cache if exists.
         """
-
 
 class ICacheProvider(Interface):
     """This interface describes an API for caching objects.
@@ -83,3 +85,11 @@ class ICacheProvider(Interface):
         
         Always return None.
         """
+
+class IFSCacheProvider(CacheProvider):
+    """Marker
+    """
+
+class IMemcacheProvider(CacheProvider):
+    """Marker
+    """

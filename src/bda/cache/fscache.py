@@ -23,9 +23,6 @@ This module is tested on linux with python 2.4. If you are running in troubles
 when using another operating system or python version, please contact the 
 author.
 """
-__author__ = """Robert Niederreiter <robertn@bluedynamics.com>"""
-__docformat__ = 'plaintext'
-__version__ = '0.9'
 
 try:
     import cPickle as pickle
@@ -34,9 +31,10 @@ except:
 
 import os
 from zope.interface import implements
-from interfaces import ICacheProvider
+from interfaces import CacheException
+from interfaces import IFSCacheProvider
 
-class FSCacheException(Exception): pass
+class FSCacheException(CacheException): pass
 
 class FSCache(object):
     """Class FsCache.
@@ -67,7 +65,7 @@ class FSCache(object):
     the name 'foo.' while 'foo.bar' is sored at 'foo/bar.'.
     """
     
-    implements(ICacheProvider)
+    implements(IFSCacheProvider)
     
     def __init__(self, cachedir, protocol=2, createDirIfNotExist=False):
         """Create the cache object.

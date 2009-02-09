@@ -17,6 +17,9 @@ from interfaces import ICacheManager
 from interfaces import ICacheProvider
 
 class CacheManager(object):
+    """XXX: call this FSCacheManager.
+    """
+    
     implements(ICacheManager)
     adapts(ICacheProvider)
     
@@ -28,10 +31,10 @@ class CacheManager(object):
         self.timeout = timeout
     
     def getData(self, func, key, force_reload=False, args=[], kwargs={}):
-        from_cache = True
+        #from_cache = True
         ret = self.get(key, force_reload)
         if ret is None:
-            from_cache = False
+            #from_cache = False
             ret = func(*args, **kwargs)
             self.set(key, ret)
         return ret
@@ -74,3 +77,35 @@ class CacheManager(object):
         if not creationtime or creationtime + self.timeout < cur:
             return True
         return False 
+
+FSCacheManager = CacheManager
+
+class MemcacheManager(object):
+    
+    implements(ICacheManager)
+    adapts(ICacheProvider)
+    
+    def __init__(self, context):
+        self.cache = context
+    
+    def setTimeout(self, timeout):
+        pass # XXX: write log entry ?
+    
+    def getData(self, func, key, force_reload=False, args=[], kwargs={}):
+        ret = self.get(key, force_reload)
+        if ret is None:
+            ret = func(*args, **kwargs)
+            self.set(key, ret)
+        return ret
+    
+    def get(self, key, force_reload=False):
+        if force_reload:
+            del self.cache[key]
+            return None
+        return self.cache.get(key, None)
+    
+    def set(self, key, item):
+        self.cache[key] = item
+    
+    def rem(self, key):
+        del self.cache[key]
