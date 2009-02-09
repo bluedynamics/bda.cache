@@ -1,5 +1,5 @@
 #
-# Copyright 2008, Blue Dynamics Alliance, Austria - http://bluedynamics.com
+# Copyright 2008, BlueDynamics Alliance, Austria - http://bluedynamics.com
 #
 # GNU General Public Licence Version 2 or later
 
@@ -30,9 +30,8 @@ class Memcached(object):
     def __init__(self, servers):
         """Initialize memcached.
         @param servers: an array of servers. Servers can be passed in two forms:
-            1. Strings of the form host:port, which implies a default weight of 1.
-            2. Tuples of the form host:port, where C{weight} is
-            an integer weight value.
+            1. Strings of the form host:port (implies a default weight of 1).
+            2. Tuples of the form (host:port, weight) (weight as integer)
         """
         self._client = Client(servers)
         self.timeout = 0
