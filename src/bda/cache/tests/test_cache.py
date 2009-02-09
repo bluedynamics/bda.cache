@@ -15,7 +15,7 @@ optionflags = doctest.NORMALIZE_WHITESPACE | \
 
 TESTFILES = [
     '../fscache.txt',
-    '../memcache.txt',
+    '../memcached.txt',
     '../cachemanager.txt',
 ]
 

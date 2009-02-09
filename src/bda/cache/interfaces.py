@@ -95,6 +95,6 @@ class IFSCacheProvider(ICacheProvider):
     """Marker
     """
 
-class IMemcacheProvider(ICacheProvider):
+class IMemcachedProvider(ICacheProvider):
     """Marker
     """

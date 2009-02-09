@@ -1,0 +1,1 @@
+>>> from bda.cache.memcached import Memcached

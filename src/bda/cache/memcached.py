@@ -19,13 +19,13 @@ from interfaces import ICacheManager
 from interfaces import ICacheProvider
 from interfaces import CacheException
 
-from interfaces import IMemcacheProvider
+from interfaces import IMemcachedProvider
 
-class MemcacheException(CacheException): pass
+class MemcachedException(CacheException): pass
 
-class Memcache(object):
+class Memcached(object):
     
-    implements(IMemcacheProvider)
+    implements(IMemcachedProvider)
     
     def __init__(self, foo):
         pass
@@ -54,7 +54,7 @@ class Memcache(object):
     def __delitem__(self, key):
         pass
 
-class MemcacheManager(object):
+class MemcachedManager(object):
     
     implements(ICacheManager)
     adapts(ICacheProvider)

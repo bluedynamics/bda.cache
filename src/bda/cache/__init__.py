@@ -13,9 +13,9 @@ from fscache import FSCache
 from fscache import FSCacheManager
 from fscache import FSCacheException
 
-from memcache import Memcache
-from memcache import MemcacheManager
-from memcache import MemcacheException
+from memcached import Memcached
+from memcached import MemcachedManager
+from memcached import MemcachedException
 
 # XXX: remove me, some shit left in BlueWebMail
 from cachemanager import CacheManager
