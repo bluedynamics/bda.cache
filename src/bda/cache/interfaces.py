@@ -19,16 +19,21 @@ class ICacheVary(Interface):
         """
 
 class ICacheManager(Interface):
-    """This interface describes the cache manager API
+    """Interface for read/write operations on ICacheProvider implementing
+    objects.
     """
     
     def setTimeout(timeout):
-        """Set the timeout for this cache.
+        """Set cache timeout in seconds.
         """
     
     def getData(func, key, force_reload=False, args=[], kwargs={}):
-        """Return cached data, or call func, cache it's return value and return
-        it.
+        """Convenience to read and cache results at once.
+        
+        * Tries to read result from cache.
+        * If no result, call given functions with *args ang **kwargs
+        * If function called, store returned value to cache
+        * Return result
         """
     
     def get(key, force_reload=False):
