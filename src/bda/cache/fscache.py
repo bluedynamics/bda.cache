@@ -36,6 +36,8 @@ import os
 from zope.interface import implements
 from interfaces import ICacheProvider
 
+class FSCacheException(Exception): pass
+
 class FSCache(object):
     """Class FsCache.
     
@@ -90,52 +92,34 @@ class FSCache(object):
         if not os.path.isdir(cachedir):
             errmsg = 'Cannot initialize cache. \'%s\' is not a Directory.'
             raise FSCacheException(errmsg % cachedir)
-        
         self.cachedir = cachedir
         self.protocol = protocol
     
     def reset(self):
-        """Reset this cache object.
-        
-        Remove all objects from cache.
-        """
         for key in self.keys():
             del self[key]
     
     def size(self):
-        """Return the current size of the cache in byte.
-        
-        TODO:
-        """
+        # XXX
         return 0
         
     def keys(self):
-        """Return the keys of the objects contained in this cache as list.
-        """
         return self._readkeys([])
                 
     def values(self):
-        """Return objects contained in this cache as list.
-        """
         values = []
         for key in self.keys():
             values.append(self[key])
         return values
     
     def get(self, key, default=None):
-        """Return object by key or default value if not exist.
-        """
         return self._getitem(key, default)
     
     def __getitem__(self, key):
-        """Return object by key or None if not exists.
-        """
         return self._getitem(key)
     
     def __setitem__(self, key, object):
-        """Store object to file system by given key.
-        
-        Read the class documentation for how keys must look like.
+        """Read the class documentation how keys must look like.
         """
         objpath = key.split('.')
         objlen = len(objpath)
@@ -147,17 +131,12 @@ class FSCache(object):
             if not exists:
                 os.mkdir(path)
             pt += 1
-        path = os.path.join(path, '%s.' % objpath[-1])
-            
+        path = os.path.join(path, '%s.' % objpath[-1])  
         file = open(path, 'wb')
         pickle.dump(object, file, self.protocol)
         file.close()
     
     def __delitem__(self, key):
-        """Delete object by key from cache.
-        
-        Always return None.
-        """
         path = key.split('.')
         path[-1] = '%s.' % path[-1]
         try:
@@ -179,8 +158,6 @@ class FSCache(object):
         return None
     
     def _getitem(self, key, default=None):
-        """Used by __getitem__() and get().
-        """
         path = '%s.' % os.path.join(self.cachedir, *key.split('.'))
         try:
             file = open(path, 'rb')
@@ -191,8 +168,6 @@ class FSCache(object):
         return obj
     
     def _readkeys(self, keys, path=[]):
-        """Recursive path resolution.
-        """
         entries = os.listdir(os.path.join(self.cachedir, *path))
         for entry in entries:
             if entry[-1] == '.':
@@ -205,14 +180,9 @@ class FSCache(object):
         return keys
     
     def _createDirIfNotExist(self, cachedir):
-        """Create cache directory if not exist.
-        """
         if os.path.exists(cachedir):
             return
         path = cachedir.split(os.path.sep)
         for i in range(len(path)):
             if not os.path.exists(os.path.sep.join(path[:i + 1])) and path[i]:
                 os.mkdir(os.path.sep.join(path[:i + 1]))
-
-
-class FSCacheException(Exception): pass
