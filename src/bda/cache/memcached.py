@@ -33,7 +33,9 @@ class Memcached(object):
             2. Tuples of the form host:port, where C{weight} is
             an integer weight value.
         """
-        self._client = Client(servers)    
+        self._client = Client(servers)
+        self.timeout = 0
+          
     def reset(self):
         self._client.flush_all()
     
@@ -45,21 +47,24 @@ class Memcached(object):
         return bytes
 
     def keys(self):
-        raise NotImplementedError, \
+        raise MemcachedException, \
               "It's not possible to fetch keys from memcached"
                 
     def values(self):
-        raise NotImplementedError, \
+        raise MemcachedException, \
               "It's not possible to fetch values from memcached"
     
     def get(self, key, default=None):
         value = self._client.get(key)
+        if value is not None:
+            return value 
+        return default
     
     def __getitem__(self, key):
         return self._client.get(key)
     
     def __setitem__(self, key, object):
-        self._client.set(key, object)
+        self._client.set(key, object, time=self.timeout)
     
     def __delitem__(self, key):
         self._client.delete(key)
@@ -73,7 +78,7 @@ class MemcachedManager(object):
         self.cache = context
     
     def setTimeout(self, timeout):
-        pass # XXX: write log entry ?
+        self.cache.timeout = timeout
     
     def getData(self, func, key, force_reload=False, args=[], kwargs={}):
         ret = self.get(key, force_reload)

@@ -1,7 +1,7 @@
 first import some useful stuff.
 
     >>> from bda.cache.memcached import Memcached
-    >>> import os
+    >>> import os, time
     >>> from subprocess import Popen
 
 We need to start a memcached server.
@@ -12,26 +12,58 @@ We need to start a memcached server.
     
     >>> p = Popen([memcachedbin])
 
-Start simple tests.    
+Inititialize.    
 
     >>> mc = Memcached(['localhost:11211'])
     >>> mc
     <bda.cache.memcached.Memcached object at ...>
     
+Store and Read
+
+    >>> print mc['somekey']
+    None
+    
+    >>> mc.get('SomeValue', 'SomeDefault')
+    'SomeDefault'
+    
     >>> mc['somekey'] = 'SomeValue'
     >>> mc['somekey']
     'SomeValue'
     
+The cache can report ist size. Its the real memory consumption, not just the 
+payload! [I hope this test always results in the same size on different 
+Operating Systems and architectures --jensens]     
     >>> mc.size()
     65
     
     >>> del mc['somekey']
     >>> print mc['somekey']
     None
+
+It should flush the memcached! 
+    >>> mc['1'] = 'Eins'
+    >>> mc['2'] = 'Zwei'
+
+    >>> mc['1'], mc['2']
+    ('Eins', 'Zwei')
     
-    >>> interact(locals())
+    >>> mc.reset()
+    >>> mc['1'], mc['2']
+    (None, None)
     
+Test the timeout.
     
+    >>> mc.timeout = 4
+    >>> mc['3'] = 3
+    >>> time.sleep(1)
+    >>> mc['3']
+    3
+    
+    >>> time.sleep(5)
+    >>> print mc['3']
+    None
+    
+    >> interact(locals())    
    
  Stop memcached.
 
