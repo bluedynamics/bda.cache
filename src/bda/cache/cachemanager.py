@@ -1,25 +1,7 @@
-# -*- coding: utf-8 -*-
 #
-# Copyright (c) 2006-2007 by:
-#     Blue Dynamics Alliance Klein & Partner KEG, Austria
-#     Squarewave Computing Robert Niederreiter, Austria
+# Copyright 2008, Blue Dynamics Alliance, Austria - http://bluedynamics.com
 #
-# GNU General Public License (GPL)
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
+# GNU General Public Licence Version 2 or later
 
 __author__ = """Robert Niederreiter <rnix@squarewave.at>"""
 __docformat__ = 'plaintext'
