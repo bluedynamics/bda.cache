@@ -61,6 +61,9 @@ is planned to be released under a BSD like licence in future.
 Changes
 -------
 
+  * 1.1.2 (rnix, 2009-02-10)
+      * remove legacy code
+
   * 1.1.1 (rnix, 2009-02-10)
       * bugfix in zcml configuration.
 

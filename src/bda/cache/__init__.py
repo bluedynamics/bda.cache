@@ -6,6 +6,8 @@
 __author__ = """Robert Niederreiter <rnix@squarewave.at>"""
 __docformat__ = 'plaintext'
 
+from interfaces import ICacheVary
+
 from interfaces import ICacheProvider
 from interfaces import ICacheManager
 
@@ -19,6 +21,3 @@ from fscache import FSCacheException
 from memcached import Memcached
 from memcached import MemcachedManager
 from memcached import MemcachedException
-
-# XXX: remove me, some shit left in BlueWebMail
-from cachemanager import CacheManager
