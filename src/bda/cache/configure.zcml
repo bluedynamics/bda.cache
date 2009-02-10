@@ -12,7 +12,7 @@
   
   <adapter
 	for=".interfaces.IMemcachedProvider"
-	factory=".memcache.MemcachedManager"
+	factory=".memcached.MemcachedManager"
   />
 
 </configure>
