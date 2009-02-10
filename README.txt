@@ -48,7 +48,7 @@ Dependencies
   * zope.interface
   * zope.component
   * bda.cache.fscache.FSCache recommends that availability of ``cpickle``
-  * bda.memcached.Memcached requires ``python-memcached``
+  * bda.cache.memcached.Memcached requires ``python-memcached``
 
 
 Notes
