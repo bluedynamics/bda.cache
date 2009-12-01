@@ -1,18 +1,5 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
-  <adapter
-	for=".interfaces.INullCacheProvider"
-	factory=".nullcache.NullCacheManager"
-  />
-
-  <adapter
-	for=".interfaces.IFSCacheProvider"
-	factory=".fscache.FSCacheManager"
-  />
-  
-  <adapter
-	for=".interfaces.IMemcachedProvider"
-	factory=".memcached.MemcachedManager"
-  />
+<!-- DEPRECATED - REMOVED IN FUTURE -->
 
 </configure>
