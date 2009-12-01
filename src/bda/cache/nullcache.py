@@ -1,14 +1,9 @@
-#
-# Copyright 2008, Blue Dynamics Alliance, Austria - http://bluedynamics.com
-#
+# Copyright 2009, Blue Dynamics Alliance, Austria - http://bluedynamics.com
 # GNU General Public Licence Version 2 or later
-
-__author__ = """Robert Niederreiter <rnix@squarewave.at>"""
-__docformat__ = 'plaintext'
 
 from zope.interface import implements
 from zope.component import adapts
-
+from zope.component import provideAdapter
 from interfaces import ICacheManager
 from interfaces import ICacheProvider
 from interfaces import INullCacheProvider
@@ -51,7 +46,7 @@ class NullCache(object):
 class NullCacheManager(object):
     
     implements(ICacheManager)
-    adapts(ICacheProvider)
+    adapts(INullCacheProvider)
     
     def __init__(self, context):
         pass
@@ -73,3 +68,5 @@ class NullCacheManager(object):
     
     def __delitem__(self, key):
         pass
+    
+provideAdapter(NullCacheManager)

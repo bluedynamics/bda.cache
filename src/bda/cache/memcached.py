@@ -1,12 +1,5 @@
-#
-# Copyright 2008, BlueDynamics Alliance, Austria - http://bluedynamics.com
-#
+# Copyright 2009, Blue Dynamics Alliance, Austria - http://bluedynamics.com
 # GNU General Public Licence Version 2 or later
-
-__author__ = """Robert Niederreiter <rnix@squarewave.at>,
-                Jens Klein <jens@bluedynamics.com>"""
-__docformat__ = 'plaintext'
-
 """
 Module memcache.
 
@@ -15,6 +8,7 @@ This module provides fuctionallity for caching objects in a memcache server.
 
 from zope.interface import implements
 from zope.component import adapts
+from zope.component import provideAdapter
 from interfaces import ICacheManager
 from interfaces import ICacheProvider
 from interfaces import CacheException
@@ -72,7 +66,7 @@ class Memcached(object):
 class MemcachedManager(object):
     
     implements(ICacheManager)
-    adapts(ICacheProvider)
+    adapts(IMemcachedProvider)
     
     def __init__(self, context):
         self.cache = context
@@ -102,3 +96,5 @@ class MemcachedManager(object):
     
     def __delitem__(self, key):
         del self.cache[key]
+        
+provideAdapter(MemcachedManager)        

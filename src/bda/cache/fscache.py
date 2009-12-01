@@ -1,11 +1,5 @@
-#
-# Copyright 2008, Blue Dynamics Alliance, Austria - http://bluedynamics.com
-#
+# Copyright 2009, Blue Dynamics Alliance, Austria - http://bluedynamics.com
 # GNU General Public Licence Version 2 or later
-
-__author__ = """Robert Niederreiter <rnix@squarewave.at>"""
-__docformat__ = 'plaintext'
-
 """
 Module fscache.
 
@@ -36,6 +30,7 @@ import logging
 
 from zope.interface import implements
 from zope.component import adapts
+from zope.component import provideAdapter
 
 from interfaces import ICacheManager
 from interfaces import ICacheProvider
@@ -199,7 +194,7 @@ class FSCache(object):
 class FSCacheManager(object):
     
     implements(ICacheManager)
-    adapts(ICacheProvider)
+    adapts(IFSCacheProvider)
     
     def __init__(self, context):
         self.timeout = 300 # defaults to 300 seconds
@@ -258,3 +253,5 @@ class FSCacheManager(object):
         if not creationtime or creationtime + self.timeout < cur:
             return True
         return False 
+
+provideAdapter(FSCacheManager)

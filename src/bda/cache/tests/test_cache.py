@@ -3,12 +3,10 @@ __docformat__ = 'plaintext'
 
 import os
 import unittest
+import pprint 
 import interlude
-import zope.app.component
-from pprint import pprint
+import zope.component
 from zope.testing import doctest
-from zope.app.testing.placelesssetup import setUp, tearDown
-from zope.configuration.xmlconfig import XMLConfig
 import logging
 logger = logging.getLogger('bda.cache')
 
@@ -19,7 +17,7 @@ optionflags = doctest.NORMALIZE_WHITESPACE | \
 TESTFILES = [
     '../nullcache.txt',
     '../fscache.txt',
-    '../cachemanager.txt',
+    '../memcached.txt',
 ]
 
 if os.environ.get('MEMCACHEDBIN', None):
@@ -29,8 +27,6 @@ else:
                 'given in test environment (MEMCACHEDBIN).')
 
 def test_suite():
-    setUp()
-    XMLConfig('meta.zcml', zope.app.component)()
     return unittest.TestSuite([
         doctest.DocFileSuite(
             file, 
@@ -39,7 +35,6 @@ def test_suite():
                    'pprint': pprint},
         ) for file in TESTFILES
     ])
-    tearDown()
 
 if __name__ == '__main__':
     unittest.main(defaultTest='test_suite') 

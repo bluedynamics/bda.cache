@@ -9,7 +9,7 @@ __docformat__ = 'plaintext'
 from setuptools import setup, find_packages
 import sys, os
 
-version = '1.1.2'
+version = '1.1.3'
 shortdesc = "Simple caching infrastructure."
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.txt')).read()
 
@@ -30,7 +30,7 @@ setup(name='bda.cache',
       author='Robert Niederreiter',
       author_email='rnix@squarewave.at',
       url='https://svn.plone.org/svn/collective/bda.cache',
-      license='General Public Licence',
+      license='GPL: GNU General Public Licence',
       packages=find_packages('src'),
       package_dir = {'': 'src'},
       namespace_packages=['bda'],
@@ -39,12 +39,12 @@ setup(name='bda.cache',
       install_requires=[
           'setuptools',  
           'python-memcached',
-          'zope.app.component',
+          'zope.component',
       ],
       extras_require={
           'test': [
               'interlude',
-              'zope.app.testing',
+              'zope.testing',
           ]
       },
       entry_points="""
