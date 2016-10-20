@@ -13,7 +13,10 @@ from interfaces import ICacheManager
 from interfaces import ICacheProvider
 from interfaces import CacheException
 from interfaces import IMemcachedProvider
-from memcache import Client 
+try:
+    from pylibmc import Client
+except ImportError:
+    from memcache import Client
 
 class MemcachedException(CacheException): pass
 
