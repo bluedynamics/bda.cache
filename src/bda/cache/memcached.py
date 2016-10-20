@@ -15,8 +15,11 @@ from interfaces import CacheException
 from interfaces import IMemcachedProvider
 try:
     from pylibmc import Client
+    import zlib
+    PYLIBMC = True
 except ImportError:
     from memcache import Client
+    PYLIBMC = False
 
 class MemcachedException(CacheException): pass
 
@@ -61,8 +64,13 @@ class Memcached(object):
         return self._client.get(key)
     
     def __setitem__(self, key, object):
-        self._client.set(key, object, time=self.timeout)
-    
+        if PYLIBMC:
+            self._client.set(key, object, time=self.timeout,
+                             min_compress_len=1024000,
+                             compress_level=zlib.Z_BEST_SPEED)
+        else:
+            self._client.set(key, object, time=self.timeout)
+
     def __delitem__(self, key):
         self._client.delete(key)
 
