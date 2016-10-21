@@ -61,6 +61,10 @@ is planned to be released under a BSD like licence in future.
 Changes
 -------
 
+  * 1.2.0 (unreleased)
+      * Change to use pylibmc when available
+      * Add option to require with bda.cache[pylibmc]
+
   * 1.1.2 (rnix, 2009-02-10)
       * remove legacy code
 
