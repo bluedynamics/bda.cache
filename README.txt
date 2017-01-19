@@ -62,8 +62,8 @@ Changes
 -------
 
   * 1.2.0 (unreleased)
-      * Change to use pylibmc when available
-      * Add option to require with bda.cache[pylibmc]
+      * Change to use libmc or pylibmc when available
+      * Add option to require with bda.cache[pylibmc] or bda.cache[libmc]
 
   * 1.1.2 (rnix, 2009-02-10)
       * remove legacy code

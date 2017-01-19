@@ -42,6 +42,9 @@ setup(name='bda.cache',
           'zope.component',
       ],
       extras_require={
+          'libmc': [
+              'libmc'
+           ],
           'pylibmc': [
               'pylibmc'
            ],
