@@ -14,12 +14,21 @@ from interfaces import ICacheProvider
 from interfaces import CacheException
 from interfaces import IMemcachedProvider
 try:
+    from libmc import Client
+    import cPickle
+    LIBMC = True
+except ImportError:
+    LIBMC = False
+try:
     from pylibmc import Client
     import zlib
     PYLIBMC = True
 except ImportError:
-    from memcache import Client
     PYLIBMC = False
+
+if not (LIBMC or PYLIBMC):
+    from memcache import Client
+
 
 class MemcachedException(CacheException): pass
 
@@ -33,7 +42,10 @@ class Memcached(object):
             1. Strings of the form host:port (implies a default weight of 1).
             2. Tuples of the form (host:port, weight) (weight as integer)
         """
-        self._client = Client(servers)
+        if LIBMC:
+            self._client = Client(servers, comp_threshold=10240, noreply=True)
+        else:
+            self._client = Client(servers)
         self.timeout = 0
           
     def reset(self):
@@ -64,7 +76,7 @@ class Memcached(object):
         return self._client.get(key)
     
     def __setitem__(self, key, object):
-        if PYLIBMC:
+        if PYLIBMC and not LIBMC:
             self._client.set(key, object, time=self.timeout,
                              min_compress_len=1024000,
                              compress_level=zlib.Z_BEST_SPEED)
