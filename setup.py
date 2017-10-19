@@ -11,7 +11,7 @@ import sys, os
 
 version = '1.2.0'
 shortdesc = "Simple caching infrastructure."
-longdesc = open(os.path.join(os.path.dirname(__file__), 'README.txt')).read()
+longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
 setup(name='bda.cache',
       version=version,
