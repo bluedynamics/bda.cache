@@ -6,17 +6,21 @@ kinds of caching flavour. This is abstracted due to the interfaces
 ``ICacheProvider`` and  ``ICacheManager``. ICacheProvider takes care of the
 concrete cache implementation, ICacheManager is the read/write interface.
 
-The convention is to adapt a concrete ICacheProvider implementation.
+The convention is to adapt a concrete ICacheProvider implementation
 
-  >>> from bda.cache import ICacheManager
-  >>> from bda.cache import Memcached
+.. code-block:: python
+
+    from bda.cache import ICacheManager
+    from bda.cache import Memcached
   
-  >>> provider = Memcached(['127.0.0.1:11211'])
-  >>> manager = ICacheManager(provider)
+    provider = Memcached(['127.0.0.1:11211'])
+    manager = ICacheManager(provider)
 
 We can ask the manager for data inside the cache
 
-  >>> data = manager.get('somekey', force_reload=False)
+.. code-block:: python
+
+    data = manager.get('somekey', force_reload=False)
 
 If ``force_reload`` is set to True, try to delete data with key from cache and
 return None.
@@ -24,11 +28,15 @@ return None.
 We're also able to manipulate the cache's data (some restrictions my result out
 of backend not providing them)
 
-  >>> manager.set('somekey', object())
+.. code-block:: python
+
+    manager.set('somekey', object())
 
 There exist a convenience to use some API's and cache it's results all at once.
 
-  >>> data = manager.getData(func, key, force_reload=False, args=[], kwargs={})
+.. code-block:: python
+
+    data = manager.getData(func, key, force_reload=False, args=[], kwargs={})
 
 First the data for ``key`` is looked up inside the cache provider. If not found
 there or if ``force_reload`` is set to True, call given ``func`` . The return
@@ -45,10 +53,13 @@ the cache manager interface.
 Dependencies
 ------------
 
-  * zope.interface
-  * zope.component
-  * bda.cache.fscache.FSCache recommends that availability of ``cpickle``
-  * bda.cache.memcached.Memcached requires ``python-memcached``
+- ``zope.interface``
+
+- ``zope.component``
+
+- ``bda.cache.fscache.FSCache`` recommends that availability of ``cpickle``
+
+- ``bda.cache.memcached.Memcached`` requires ``python-memcached``
 
 
 Notes
@@ -61,21 +72,40 @@ is planned to be released under a BSD like licence in future.
 Changes
 -------
 
-  * 1.2.0 (unreleased)
-      * Change to use libmc or pylibmc when available
-      * Add option to require with bda.cache[pylibmc] or bda.cache[libmc]
+1.2.0 (2017-10-19)
+~~~~~~~~~~~~~~~~~~
 
-  * 1.1.2 (rnix, 2009-02-10)
-      * remove legacy code
+- Change to use libmc or pylibmc when available
 
-  * 1.1.1 (rnix, 2009-02-10)
-      * bugfix in zcml configuration.
+- Add option to require with bda.cache[pylibmc] or bda.cache[libmc]
 
-  * 1.1 (rnix, 2009-02-09):
-      * Cache Managers are now adapters.
-      * Implement memcached server support
-      * deprecate the default CacheManager
-      * Fix tests for FSCache
+
+1.1.2 (2009-02-10)
+~~~~~~~~~~~~~~~~~~
+
+- remove legacy code
+
+
+1.1.1 (2009-02-10)
+~~~~~~~~~~~~~~~~~~
+
+- bugfix in zcml configuration.
+
+
+1.1 (2009-02-09)
+~~~~~~~~~~~~~~~~
+
+- Cache Managers are now adapters.
+
+- Implement memcached server support
+
+- deprecate the default CacheManager
+
+- Fix tests for FSCache
   
-  * <= 1.0 (rnix):
-      * Initial work
+
+1.0
+~~~
+
+- Initial work
+
