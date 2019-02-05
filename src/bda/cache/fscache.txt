@@ -37,7 +37,7 @@ Now remove this file
     >>> os.remove(cachepath)
 
 And create the cache directory
-    >>> os.mkdir(cachepath) 
+    >>> os.mkdir(cachepath)
 
 Now start the tests with the FSCache
     >>> cache = FSCache(cachepath)
@@ -82,7 +82,7 @@ Now overwrite an existing entry
 
 Now take an object and use a subpart of an existing key as key for this object.
 This works because there always a '.' is added to the end of a key, so that
-'user.section' results in 'user/section.' and 'user.section.object' results in 
+'user.section' results in 'user/section.' and 'user.section.object' results in
 'user/section/object.', ...
     >>> cache['user.section'] = {'onemorekey': 'onemorevalue'}
     >>> obj = cache['user.section']

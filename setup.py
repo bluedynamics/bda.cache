@@ -10,7 +10,6 @@ from setuptools import find_packages
 from setuptools import setup
 
 import os
-import sys
 
 
 version = "1.2.0"
@@ -30,7 +29,7 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
-    ],  # Get strings from http://www.python.org/pypi?%3Aaction=list_classifiers
+    ],
     keywords="",
     author="Robert Niederreiter",
     author_email="rnix@squarewave.at",

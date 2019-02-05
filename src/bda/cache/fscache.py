@@ -14,7 +14,7 @@ If you find this module useful and you have some improvements or bugfixes,
 please contact the author.
 
 This module is tested on linux with python 2.4. If you are running in troubles
-when using another operating system or python version, please contact the 
+when using another operating system or python version, please contact the
 author.
 """
 
@@ -47,28 +47,28 @@ class FSCacheException(CacheException):
 @implementer(IFSCacheProvider)
 class FSCache(object):
     """Class FsCache.
-    
+
     Simple object caching.
-    
+
     This class is accessible like a dictionary. For example:
-        
+
     cache = FsCache('var/cache/mycache')
     cache['foo.bar'] = obj
     obj = ['foo.bar']
     obj = cache.get('foo.bar', False)
     del cache['foo.bar']
-    
+
     The key for objects must ALWAYS be a string, it results directly in a
     file path.
-    
+
     By convention, if the key is seperated by a dot like in the example above,
     the files created on your filesystem are placed in a directory tree, so
     the file for the key given in this example is placed at 'foo/bar.'.
-    
-    Take care of your keys, things like 'foo..bar', 'foo.',  '.foo' or using 
+
+    Take care of your keys, things like 'foo..bar', 'foo.',  '.foo' or using
     path seperators like '/' and '\\' will end up in strange results and cause
     inconsistent data.
-    
+
     On the other hand, it is no problem to store an object with key 'foo',
     since every file gets a trailing '.', so key 'foo' ends up in a file with
     the name 'foo.' while 'foo.bar' is sored at 'foo/bar.'.
@@ -76,14 +76,14 @@ class FSCache(object):
 
     def __init__(self, cachedir, protocol=2, createDirIfNotExist=False):
         """Create the cache object.
-        
+
         * basedir - the directory you want to store the cached objects.
         * protocol - the protocol you want to use for pickling. defaults to 2.
-        
+
         Raise an FSCacheException when given basedir is invalid. Does not check
         if there is read/write access on this directory. Keep this in mind.
-        
-        Read the documentation of the module pickle to know about the 
+
+        Read the documentation of the module pickle to know about the
         limitations on object pickling.
         """
         if not os.path.isabs(cachedir):

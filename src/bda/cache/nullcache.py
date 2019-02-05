@@ -10,7 +10,7 @@ from zope.interface import implementer
 
 @implementer(INullCacheProvider)
 class NullCache(object):
-    """Dummy implementation which does nothing and can be used as fallback. 
+    """Dummy implementation which does nothing and can be used as fallback.
     """
 
     def __init__(self):

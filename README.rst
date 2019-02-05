@@ -12,7 +12,7 @@ The convention is to adapt a concrete ICacheProvider implementation
 
     from bda.cache import ICacheManager
     from bda.cache import Memcached
-  
+
     provider = Memcached(['127.0.0.1:11211'])
     manager = ICacheManager(provider)
 
@@ -72,6 +72,13 @@ is planned to be released under a BSD like licence in future.
 Changes
 -------
 
+1.3.0 (2019-02-05)
+~~~~~~~~~~~~~~~~~~
+
+- Python 3 comaptibility [reinhardt]
+
+- Code style (black/isort) [jensens]
+
 1.2.0 (2017-10-19)
 ~~~~~~~~~~~~~~~~~~
 
@@ -102,7 +109,7 @@ Changes
 - deprecate the default CacheManager
 
 - Fix tests for FSCache
-  
+
 
 1.0
 ~~~

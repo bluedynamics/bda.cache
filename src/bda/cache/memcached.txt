@@ -15,62 +15,62 @@ We need to start a memcached server.
     >>> memcachedbin = os.environ.get('MEMCACHEDBIN', None)
     >>> memcachedbin is not None
     True
-    
+
     >>> p = Popen([memcachedbin])
 
 test the provider
 -----------------
 
-Inititialize.    
+Inititialize.
 
     >>> mc = Memcached(['localhost:11211'])
     >>> mc
     <bda.cache.memcached.Memcached object at ...>
-    
+
 Store and Read
 
     >>> print mc['somekey']
     None
-    
+
     >>> mc.get('SomeValue', 'SomeDefault')
     'SomeDefault'
-    
+
     >>> mc['somekey'] = 'SomeValue'
     >>> mc['somekey']
     'SomeValue'
-    
-The cache can report ist size. Its the real memory consumption, not just the 
-payload! [I hope this test always results in the same size on different 
-Operating Systems and architectures --jensens]     
+
+The cache can report ist size. Its the real memory consumption, not just the
+payload! [I hope this test always results in the same size on different
+Operating Systems and architectures --jensens]
     >>> mc.size()
     65
-    
+
     >>> del mc['somekey']
     >>> print mc['somekey']
     None
 
-It should flush the memcached! 
+It should flush the memcached!
     >>> mc['1'] = 'Eins'
     >>> mc['2'] = 'Zwei'
 
     >>> mc['1'], mc['2']
     ('Eins', 'Zwei')
-    
+
     >>> mc.reset()
     >>> mc['1'], mc['2']
     (None, None)
-    
+
 Test the timeout.
-    
+
     >>> mc.timeout = 2
     >>> mc['3'] = 3
     >>> mc['3']
     3
-    
+
     >>> time.sleep(3)
     >>> print mc['3']
     None
-    
+
     >>> mc.timeout = 0
 
 test the manager
@@ -82,18 +82,18 @@ The manager doesn't do any fancy things, it just delegates to the provider.
     >>> manager = ICacheManager(mc)
     >>> manager
     <bda.cache.memcached.MemcachedManager object at ...>
-    
+
 first test set and get
-    
+
     >>> manager.set('AnotherKey', 'AnotherValue')
     >>> manager.get('AnotherKey')
     'AnotherValue'
-   
+
 force reload on get results always in None
-    
+
     >>> print manager.get('AnotherKey', True)
     None
-    
+
 ok, now lets test the real interesting part, the getData method.
 
     >>> counter = 0
@@ -101,43 +101,42 @@ ok, now lets test the real interesting part, the getData method.
     ...     global counter
     ...     counter += 1
     ...     return x*x
-    
+
     >>> manager.getData(square, str(4), args=[4])
     16
-    
+
     >>> counter
     1
 
     >>> manager.getData(square, str(4), args=[4])
     16
-    
+
     >>> counter
     1
-    
+
 test force_reload
 
     >>> manager.getData(square, str(4), True, args=[4])
     16
-    
+
     >>> counter
     2
-    
+
     >>> manager.getData(square, str(5), True, args=[5])
     25
-    
+
     >>> counter
     3
-    
+
     >>> manager.get('5')
     25
-    
+
     >>> del manager['5']
     >>> print manager.get('5')
     None
-    
-    >> interact(locals())    
-   
+
+    >> interact(locals())
+
  Stop memcached.
 
     >>> os.kill(p.pid, 5)
-    

@@ -15,22 +15,22 @@ Check if this stuff does nothing :)
   Traceback (most recent call last):
       ...
   NotImplementedError: It's not possible to fetch keys from nothing
-                
+
   >>> provider.values()
   Traceback (most recent call last):
       ...
   NotImplementedError: It's not possible to fetch values from nothing
-    
+
   >>> provider.get('foo')
   >>> provider.__getitem__('foo')
   >>> provider.__setitem__('foo', object())
   >>> provider.__delitem__('foo')
-  
+
   >>> manager = ICacheManager(provider)
   >>> manager.setTimeout(0)
   >>> def func():
   ...     return None
-  >>> manager.getData(func, 'foo')  
+  >>> manager.getData(func, 'foo')
   >>> manager.get('foo')
   >>> manager.set('foo', object())
   >>> manager.rem('foo')

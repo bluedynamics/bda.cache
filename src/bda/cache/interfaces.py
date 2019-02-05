@@ -28,7 +28,7 @@ class ICacheManager(Interface):
 
     def getData(func, key, force_reload=False, args=[], kwargs={}):
         """Convenience to read and cache results at once.
-        
+
         * Tries to read result from cache.
         * If no result, call given functions with *args ang **kwargs
         * If function called, store returned value to cache
@@ -37,20 +37,20 @@ class ICacheManager(Interface):
 
     def get(key, force_reload=False):
         """Return item with key or None.
-        
+
         If force_reload is True, try to delete object with key from cache and
         return None.
         """
 
     def set(key, item, set_creationtime=True):
         """Store an item with key to cache.
-        
+
         XXX: get rid of ``set_creationtime``
         """
 
     def rem(key):
         """Remove item with key from cache if exists.
-        
+
         Legacy. Replaced by ``__delitem__``
         """
 
@@ -65,7 +65,7 @@ class ICacheProvider(Interface):
 
     def reset():
         """Reset the cache object.
-        
+
         Remove all objects from cache.
         """
 
@@ -95,7 +95,7 @@ class ICacheProvider(Interface):
 
     def __delitem__(key):
         """Delete object by key from cache.
-        
+
         Always return None.
         """
 
