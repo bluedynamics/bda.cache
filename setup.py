@@ -33,7 +33,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
     ],
-    keywords="",
+    keywords="caching memcached fscache zope zca",
     author="Robert Niederreiter",
     author_email="rnix@squarewave.at",
     url="https://svn.plone.org/svn/collective/bda.cache",
