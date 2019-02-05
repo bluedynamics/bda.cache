@@ -1,13 +1,13 @@
 # Copyright 2009, Blue Dynamics Alliance, Austria - http://bluedynamics.com
 # GNU General Public Licence Version 2 or later
 
-from zope.interface import implementer
-from zope.component import adapter
-from zope.component import provideAdapter
 from bda.cache.interfaces import ICacheManager
 from bda.cache.interfaces import INullCacheProvider
+from zope.component import adapter
+from zope.component import provideAdapter
+from zope.interface import implementer
 
-    
+
 @implementer(INullCacheProvider)
 class NullCache(object):
     """Dummy implementation which does nothing and can be used as fallback. 

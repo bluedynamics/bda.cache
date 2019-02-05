@@ -6,13 +6,15 @@ Module memcache.
 This module provides fuctionallity for caching objects in a memcache server.
 """
 
-from zope.interface import implementer
-from zope.component import adapter
-from zope.component import provideAdapter
+from bda.cache.interfaces import CacheException
 from bda.cache.interfaces import ICacheManager
 from bda.cache.interfaces import ICacheProvider
-from bda.cache.interfaces import CacheException
 from bda.cache.interfaces import IMemcachedProvider
+from zope.component import adapter
+from zope.component import provideAdapter
+from zope.interface import implementer
+
+
 try:
     from libmc import Client
     import six.moves.cPickle

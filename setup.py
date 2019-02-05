@@ -6,8 +6,12 @@
 __author__ = """Robert Niederreiter <rnix@squarewave.at>"""
 __docformat__ = 'plaintext'
 
-from setuptools import setup, find_packages
-import sys, os
+from setuptools import find_packages
+from setuptools import setup
+
+import os
+import sys
+
 
 version = '1.2.0'
 shortdesc = "Simple caching infrastructure."

@@ -3,6 +3,7 @@
 
 from zope.interface import Interface
 
+
 class CacheException(Exception): pass
 
 class ICacheVary(Interface):

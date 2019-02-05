@@ -24,19 +24,18 @@ except:
     import pickle
 
 
-import os
-import time
-import logging
-
-from zope.interface import implementer
-from zope.component import adapter
-from zope.component import provideAdapter
-
-from bda.cache.interfaces import ICacheManager
 from bda.cache.interfaces import CacheException
-
+from bda.cache.interfaces import ICacheManager
 from bda.cache.interfaces import IFSCacheProvider
 from six.moves import range
+from zope.component import adapter
+from zope.component import provideAdapter
+from zope.interface import implementer
+
+import logging
+import os
+import time
+
 
 logger = logging.getLogger('bda.cache.cachemanager')
 

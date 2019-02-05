@@ -1,13 +1,16 @@
 __author__ = """Robert Niederreiter <rnix@squarewave.at>"""
 __docformat__ = 'plaintext'
 
-import os
-import unittest
-import pprint 
-import interlude
-import zope.component
 from zope.testing import doctest
+
+import interlude
 import logging
+import os
+import pprint
+import unittest
+import zope.component
+
+
 logger = logging.getLogger('bda.cache')
 
 optionflags = doctest.NORMALIZE_WHITESPACE | \
