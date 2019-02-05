@@ -1,7 +1,7 @@
 Changes
 -------
 
-1.3.0 (unreleased)
+1.3.0 (2019-02-05)
 ~~~~~~~~~~~~~~~~~~
 
 - Python 3 comaptibility [reinhardt]

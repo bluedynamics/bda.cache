@@ -12,7 +12,7 @@ from setuptools import setup
 import os
 
 
-version = "1.3.0.dev0"
+version = '1.3.0'
 shortdesc = "Simple caching infrastructure."
 longdesc = open(os.path.join(os.path.dirname(__file__), "README.rst")).read()
 longdesc += open(os.path.join(os.path.dirname(__file__), "CHANGES.rst")).read()
