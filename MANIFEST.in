@@ -1,5 +1,6 @@
 include *.toml
 include *.txt
+include *.rst
 include buildout.cfg
 recursive-include src *.txt
 recursive-include src *.zcml
