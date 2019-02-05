@@ -1,18 +1,17 @@
 # Copyright 2009, Blue Dynamics Alliance, Austria - http://bluedynamics.com
 # GNU General Public Licence Version 2 or later
 
-from zope.interface import implements
-from zope.component import adapts
+from zope.interface import implementer
+from zope.component import adapter
 from zope.component import provideAdapter
-from interfaces import ICacheManager
-from interfaces import ICacheProvider
-from interfaces import INullCacheProvider
+from bda.cache.interfaces import ICacheManager
+from bda.cache.interfaces import INullCacheProvider
 
+    
+@implementer(INullCacheProvider)
 class NullCache(object):
     """Dummy implementation which does nothing and can be used as fallback. 
     """
-    
-    implements(INullCacheProvider)
     
     def __init__(self):
         pass
@@ -24,12 +23,12 @@ class NullCache(object):
         return 0
 
     def keys(self):
-        raise NotImplementedError, \
-              "It's not possible to fetch keys from nothing"
+        raise NotImplementedError(
+            "It's not possible to fetch keys from nothing")
                 
     def values(self):
-        raise NotImplementedError, \
-              "It's not possible to fetch values from nothing"
+        raise NotImplementedError(
+            "It's not possible to fetch values from nothing")
     
     def get(self, key, default=None):
         return None
@@ -43,10 +42,10 @@ class NullCache(object):
     def __delitem__(self, key):
         pass
 
-class NullCacheManager(object):
     
-    implements(ICacheManager)
-    adapts(INullCacheProvider)
+@implementer(ICacheManager)
+@adapter(INullCacheProvider)
+class NullCacheManager(object):
     
     def __init__(self, context):
         pass

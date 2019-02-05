@@ -19,7 +19,7 @@ author.
 """
 
 try:
-    import cPickle as pickle
+    import six.moves.cPickle as pickle
 except:
     import pickle
 
@@ -28,20 +28,22 @@ import os
 import time
 import logging
 
-from zope.interface import implements
-from zope.component import adapts
+from zope.interface import implementer
+from zope.component import adapter
 from zope.component import provideAdapter
 
-from interfaces import ICacheManager
-from interfaces import ICacheProvider
-from interfaces import CacheException
+from bda.cache.interfaces import ICacheManager
+from bda.cache.interfaces import CacheException
 
-from interfaces import IFSCacheProvider
+from bda.cache.interfaces import IFSCacheProvider
+from six.moves import range
 
 logger = logging.getLogger('bda.cache.cachemanager')
 
 class FSCacheException(CacheException): pass
 
+    
+@implementer(IFSCacheProvider)
 class FSCache(object):
     """Class FsCache.
     
@@ -70,8 +72,6 @@ class FSCache(object):
     since every file gets a trailing '.', so key 'foo' ends up in a file with
     the name 'foo.' while 'foo.bar' is sored at 'foo/bar.'.
     """
-    
-    implements(IFSCacheProvider)
     
     def __init__(self, cachedir, protocol=2, createDirIfNotExist=False):
         """Create the cache object.
@@ -191,10 +191,10 @@ class FSCache(object):
             if not os.path.exists(os.path.sep.join(path[:i + 1])) and path[i]:
                 os.mkdir(os.path.sep.join(path[:i + 1]))
 
-class FSCacheManager(object):
     
-    implements(ICacheManager)
-    adapts(IFSCacheProvider)
+@implementer(ICacheManager)
+@adapter(IFSCacheProvider)
+class FSCacheManager(object):
     
     def __init__(self, context):
         self.timeout = 300 # defaults to 300 seconds
@@ -216,7 +216,7 @@ class FSCacheManager(object):
         if force_reload or self._isTimedOut(key):
             del self.cache[key]
             creationmap = self.cache.get('creationmap', None)
-            if creationmap is not None and creationmap.has_key(key):
+            if creationmap is not None and key in creationmap:
                 del creationmap[key]
                 self.cache['creationmap'] = creationmap
             return None
@@ -235,7 +235,7 @@ class FSCacheManager(object):
     def rem(self, key):
         del self.cache[key]
         creationmap = self.cache.get('creationmap', None)
-        if creationmap is not None and creationmap.has_key(key):
+        if creationmap is not None and key in creationmap:
             del creationmap[key]
             self.cache['creationmap'] = creationmap
     
