@@ -6,16 +6,16 @@ Module memcache.
 This module provides fuctionallity for caching objects in a memcache server.
 """
 
-from zope.interface import implements
-from zope.component import adapts
+from zope.interface import implementer
+from zope.component import adapter
 from zope.component import provideAdapter
-from interfaces import ICacheManager
-from interfaces import ICacheProvider
-from interfaces import CacheException
-from interfaces import IMemcachedProvider
+from bda.cache.interfaces import ICacheManager
+from bda.cache.interfaces import ICacheProvider
+from bda.cache.interfaces import CacheException
+from bda.cache.interfaces import IMemcachedProvider
 try:
     from libmc import Client
-    import cPickle
+    import six.moves.cPickle
     LIBMC = True
 except ImportError:
     LIBMC = False
@@ -32,9 +32,9 @@ if not (LIBMC or PYLIBMC):
 
 class MemcachedException(CacheException): pass
 
-class Memcached(object):
     
-    implements(IMemcachedProvider)
+@implementer(IMemcachedProvider)
+class Memcached(object):
     
     def __init__(self, servers):
         """Initialize memcached.
@@ -59,12 +59,10 @@ class Memcached(object):
         return bytes
 
     def keys(self):
-        raise MemcachedException, \
-              "It's not possible to fetch keys from memcached"
+        raise MemcachedException("It's not possible to fetch keys from memcached")
                 
     def values(self):
-        raise MemcachedException, \
-              "It's not possible to fetch values from memcached"
+        raise MemcachedException("It's not possible to fetch values from memcached")
     
     def get(self, key, default=None):
         value = self._client.get(key)
@@ -86,10 +84,10 @@ class Memcached(object):
     def __delitem__(self, key):
         self._client.delete(key)
 
-class MemcachedManager(object):
     
-    implements(ICacheManager)
-    adapts(IMemcachedProvider)
+@implementer(ICacheManager)
+@adapter(IMemcachedProvider)
+class MemcachedManager(object):
     
     def __init__(self, context):
         self.cache = context
