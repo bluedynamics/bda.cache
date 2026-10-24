@@ -8,7 +8,6 @@ This module provides fuctionallity for caching objects in a memcache server.
 
 from bda.cache.interfaces import CacheException
 from bda.cache.interfaces import ICacheManager
-from bda.cache.interfaces import ICacheProvider
 from bda.cache.interfaces import IMemcachedProvider
 from zope.component import adapter
 from zope.component import provideAdapter
@@ -16,21 +15,24 @@ from zope.interface import implementer
 
 
 try:
-    from libmc import Client
-    import six.moves.cPickle
+    import libmc
 
     LIBMC = True
 except ImportError:
     LIBMC = False
 try:
-    from pylibmc import Client
+    import pylibmc
     import zlib
 
     PYLIBMC = True
 except ImportError:
     PYLIBMC = False
 
-if not (LIBMC or PYLIBMC):
+if LIBMC:
+    Client = libmc.Client
+elif PYLIBMC:
+    Client = pylibmc.Client
+else:
     from memcache import Client
 
 
@@ -39,7 +41,7 @@ class MemcachedException(CacheException):
 
 
 @implementer(IMemcachedProvider)
-class Memcached(object):
+class Memcached:
     def __init__(self, servers):
         """Initialize memcached.
         @param servers: an array of servers. Servers can be passed in two forms:
@@ -59,18 +61,14 @@ class Memcached(object):
         bytes = 0
         stats = self._client.get_stats()
         for name, stat in stats:
-            bytes += int(stat["bytes"])
+            bytes += int(stat['bytes'])
         return bytes
 
     def keys(self):
-        raise MemcachedException(
-            "It's not possible to fetch keys from memcached"
-        )
+        raise MemcachedException("It's not possible to fetch keys from memcached")
 
     def values(self):
-        raise MemcachedException(
-            "It's not possible to fetch values from memcached"
-        )
+        raise MemcachedException("It's not possible to fetch values from memcached")
 
     def get(self, key, default=None):
         value = self._client.get(key)
@@ -99,7 +97,7 @@ class Memcached(object):
 
 @implementer(ICacheManager)
 @adapter(IMemcachedProvider)
-class MemcachedManager(object):
+class MemcachedManager:
     def __init__(self, context):
         self.cache = context
 

@@ -1,12 +1,85 @@
-[tool.black]
-line-length = 79
-exclude = '''
-(
-    dist/    \
-    |\.git/  \
-    |\.hg/|\.mypy_cache/ \
-    |WebService_services_types\.py  \
-    |GatewayWebService_services\.py
-)
-'''
+[build-system]
+requires = ["hatchling", "hatch-fancy-pypi-readme"]
+build-backend = "hatchling.build"
 
+[project]
+name = "bda.cache"
+version = "2.0.0.dev0"
+description = "Simple caching infrastructure."
+dynamic = ["readme"]
+requires-python = ">=3.10"
+license = {text = "GNU General Public License v2 or later (GPLv2+)"}
+authors = [{name = "Robert Niederreiter", email = "rnix@squarewave.at"}]
+keywords = ["caching", "memcached", "fscache", "zope", "zca"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)",
+    "Operating System :: OS Independent",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+dependencies = [
+    "python-memcached",
+    "zope.component",
+]
+
+[project.optional-dependencies]
+libmc = ["libmc"]
+pylibmc = ["pylibmc"]
+test = [
+    "pytest",
+]
+
+[project.urls]
+Homepage = "https://github.com/bluedynamics/bda.cache"
+
+[tool.hatch.metadata.hooks.fancy-pypi-readme]
+content-type = "text/x-rst"
+fragments = [
+    {path = "README.rst"},
+    {text = "\n\n"},
+    {path = "CHANGES.rst"},
+]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/.github/",
+    "/Makefile",
+    "/mx.ini",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/bda"]
+
+[tool.pytest.ini_options]
+consider_namespace_packages = true
+addopts = ["--import-mode=importlib"]
+pythonpath = "src"
+
+[tool.ruff]
+line-length = 90
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "UP"]
+# UP008: zero-argument ``super()`` breaks on ``@plumbing`` decorated classes.
+# UP031: ``%`` formatting is kept.
+ignore = ["UP008", "UP031"]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+from-first = true
+no-sections = true
+lines-after-imports = 2
+order-by-type = false
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.zest-releaser]
+create-wheel = true

@@ -1,3 +1,16 @@
+.. image:: https://img.shields.io/pypi/v/bda.cache.svg
+    :target: https://pypi.python.org/pypi/bda.cache
+    :alt: Latest PyPI version
+
+.. image:: https://img.shields.io/pypi/dm/bda.cache.svg
+    :target: https://pypi.python.org/pypi/bda.cache
+    :alt: Number of PyPI downloads
+
+.. image:: https://github.com/bluedynamics/bda.cache/actions/workflows/test.yml/badge.svg
+    :target: https://github.com/bluedynamics/bda.cache/actions/workflows/test.yml
+    :alt: Test bda.cache
+
+
 General Caching API
 ===================
 
@@ -56,8 +69,6 @@ Dependencies
 - ``zope.interface``
 
 - ``zope.component``
-
-- ``bda.cache.fscache.FSCache`` recommends that availability of ``cpickle``
 
 - ``bda.cache.memcached.Memcached`` requires ``python-memcached``
 

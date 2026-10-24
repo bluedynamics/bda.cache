@@ -1,2 +1,12 @@
-*.egg-info
+*.egg-info/
+*.pyc
+/.coverage
+/.mxmake
+/.ruff_cache
+/build
+/constraints-mxdev.txt
+/dist/
+/htmlcov/
+/requirements-mxdev.txt
+/venv
 __pycache__

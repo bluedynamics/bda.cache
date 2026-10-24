@@ -5,39 +5,28 @@ Module fscache.
 
 This module provides fuctionallity for caching objects on the filesystem.
 
-Therefor it uses cPickle if available, otherwise pickle.
+Therefor it uses pickle.
 
 This module was originally designed for very simple caching tasks like caching
 mail headers in a MUA or similar. It is NOT a cache manager.
 
 If you find this module useful and you have some improvements or bugfixes,
 please contact the author.
-
-This module is tested on linux with python 2.4. If you are running in troubles
-when using another operating system or python version, please contact the
-author.
 """
-
-try:
-    import six.moves.cPickle as pickle
-except:
-    import pickle
-
 
 from bda.cache.interfaces import CacheException
 from bda.cache.interfaces import ICacheManager
 from bda.cache.interfaces import IFSCacheProvider
-from six.moves import range
 from zope.component import adapter
 from zope.component import provideAdapter
 from zope.interface import implementer
-
 import logging
 import os
+import pickle
 import time
 
 
-logger = logging.getLogger("bda.cache.cachemanager")
+logger = logging.getLogger('bda.cache.cachemanager')
 
 
 class FSCacheException(CacheException):
@@ -45,7 +34,7 @@ class FSCacheException(CacheException):
 
 
 @implementer(IFSCacheProvider)
-class FSCache(object):
+class FSCache:
     """Class FsCache.
 
     Simple object caching.
@@ -124,9 +113,8 @@ class FSCache(object):
         return self._getitem(key)
 
     def __setitem__(self, key, object):
-        """Read the class documentation how keys must look like.
-        """
-        objpath = key.split(".")
+        """Read the class documentation how keys must look like."""
+        objpath = key.split('.')
         objlen = len(objpath)
         pt = 1
         path = self.cachedir
@@ -136,14 +124,14 @@ class FSCache(object):
             if not exists:
                 os.mkdir(path)
             pt += 1
-        path = os.path.join(path, "%s." % objpath[-1])
-        file = open(path, "wb")
+        path = os.path.join(path, '%s.' % objpath[-1])
+        file = open(path, 'wb')
         pickle.dump(object, file, self.protocol)
         file.close()
 
     def __delitem__(self, key):
-        path = key.split(".")
-        path[-1] = "%s." % path[-1]
+        path = key.split('.')
+        path[-1] = '%s.' % path[-1]
         try:
             os.remove(os.path.join(self.cachedir, *path))
         except OSError:
@@ -151,8 +139,6 @@ class FSCache(object):
         pt = len(path) - 1
         while pt > 0:
             previous = path[:pt]
-            if not previous:
-                return None
             curpath = os.path.join(self.cachedir, *previous)
             contents = os.listdir(curpath)
             if not contents:
@@ -163,10 +149,10 @@ class FSCache(object):
         return None
 
     def _getitem(self, key, default=None):
-        path = "%s." % os.path.join(self.cachedir, *key.split("."))
+        path = '%s.' % os.path.join(self.cachedir, *key.split('.'))
         try:
-            file = open(path, "rb")
-        except IOError:
+            file = open(path, 'rb')
+        except OSError:
             return default
         obj = pickle.load(file)
         file.close()
@@ -175,11 +161,11 @@ class FSCache(object):
     def _readkeys(self, keys, path=[]):
         entries = os.listdir(os.path.join(self.cachedir, *path))
         for entry in entries:
-            if entry[-1] == ".":
-                key = ""
+            if entry[-1] == '.':
+                key = ''
                 for part in path:
-                    key = "%s%s." % (key, part)
-                keys.append("%s%s" % (key, entry[: len(entry) - 1]))
+                    key = '%s%s.' % (key, part)
+                keys.append('%s%s' % (key, entry[: len(entry) - 1]))
             else:
                 self._readkeys(keys, path + [entry])
         return keys
@@ -195,7 +181,7 @@ class FSCache(object):
 
 @implementer(ICacheManager)
 @adapter(IFSCacheProvider)
-class FSCacheManager(object):
+class FSCacheManager:
     def __init__(self, context):
         self.timeout = 300  # defaults to 300 seconds
         self.cache = context
@@ -215,10 +201,10 @@ class FSCacheManager(object):
     def get(self, key, force_reload=False):
         if force_reload or self._isTimedOut(key):
             del self.cache[key]
-            creationmap = self.cache.get("creationmap", None)
+            creationmap = self.cache.get('creationmap', None)
             if creationmap is not None and key in creationmap:
                 del creationmap[key]
-                self.cache["creationmap"] = creationmap
+                self.cache['creationmap'] = creationmap
             return None
         return self.cache.get(key, None)
 
@@ -226,27 +212,26 @@ class FSCacheManager(object):
         self.cache[key] = item
         if not set_creationtime:
             return
-        creationmap = self.cache.get("creationmap", None)
+        creationmap = self.cache.get('creationmap', None)
         if not creationmap:
             creationmap = dict()
         creationmap[key] = time.time()
-        self.cache["creationmap"] = creationmap
+        self.cache['creationmap'] = creationmap
 
     def rem(self, key):
         del self.cache[key]
-        creationmap = self.cache.get("creationmap", None)
+        creationmap = self.cache.get('creationmap', None)
         if creationmap is not None and key in creationmap:
             del creationmap[key]
-            self.cache["creationmap"] = creationmap
+            self.cache['creationmap'] = creationmap
 
     def __delitem__(self, key):
         self.rem(key)
 
     def _isTimedOut(self, key):
-        """Return wether the item with key is timed out or not.
-        """
+        """Return wether the item with key is timed out or not."""
         cur = time.time()
-        creationmap = self.cache.get("creationmap", None)
+        creationmap = self.cache.get('creationmap', None)
         if not creationmap:
             return True
         creationtime = creationmap.get(key, None)

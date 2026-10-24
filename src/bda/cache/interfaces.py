@@ -9,12 +9,10 @@ class CacheException(Exception):
 
 
 class ICacheVary(Interface):
-    """This interface describes an API for manipulating objects inside a cache.
-    """
+    """This interface describes an API for manipulating objects inside a cache."""
 
     def vary(*args, **kwargs):
-        """Manipulate objects inside the cache.
-        """
+        """Manipulate objects inside the cache."""
 
 
 class ICacheManager(Interface):
@@ -23,8 +21,7 @@ class ICacheManager(Interface):
     """
 
     def setTimeout(timeout):
-        """Set cache timeout in seconds.
-        """
+        """Set cache timeout in seconds."""
 
     def getData(func, key, force_reload=False, args=[], kwargs={}):
         """Convenience to read and cache results at once.
@@ -55,13 +52,11 @@ class ICacheManager(Interface):
         """
 
     def __delitem__(key):
-        """Remove item with key from cache if exists.
-        """
+        """Remove item with key from cache if exists."""
 
 
 class ICacheProvider(Interface):
-    """This interface describes an API for caching objects.
-    """
+    """This interface describes an API for caching objects."""
 
     def reset():
         """Reset the cache object.
@@ -70,28 +65,22 @@ class ICacheProvider(Interface):
         """
 
     def size():
-        """Return the current size of the cache in byte.
-        """
+        """Return the current size of the cache in byte."""
 
     def keys():
-        """Return the keys of the objects contained in this cache as list.
-        """
+        """Return the keys of the objects contained in this cache as list."""
 
     def values():
-        """Return objects contained in this cache as list.
-        """
+        """Return objects contained in this cache as list."""
 
     def get(key, default=None):
-        """Return object by key or default value if not exist.
-        """
+        """Return object by key or default value if not exist."""
 
     def __getitem__(key):
-        """Return object by key or None if not exists.
-        """
+        """Return object by key or None if not exists."""
 
     def __setitem__(key, object):
-        """Store object to cache by given key.
-        """
+        """Store object to cache by given key."""
 
     def __delitem__(key):
         """Delete object by key from cache.
@@ -101,15 +90,12 @@ class ICacheProvider(Interface):
 
 
 class INullCacheProvider(ICacheProvider):
-    """Marker
-    """
+    """Marker"""
 
 
 class IFSCacheProvider(ICacheProvider):
-    """Marker
-    """
+    """Marker"""
 
 
 class IMemcachedProvider(ICacheProvider):
-    """Marker
-    """
+    """Marker"""

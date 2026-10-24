@@ -9,9 +9,8 @@ from zope.interface import implementer
 
 
 @implementer(INullCacheProvider)
-class NullCache(object):
-    """Dummy implementation which does nothing and can be used as fallback.
-    """
+class NullCache:
+    """Dummy implementation which does nothing and can be used as fallback."""
 
     def __init__(self):
         pass
@@ -23,14 +22,10 @@ class NullCache(object):
         return 0
 
     def keys(self):
-        raise NotImplementedError(
-            "It's not possible to fetch keys from nothing"
-        )
+        raise NotImplementedError("It's not possible to fetch keys from nothing")
 
     def values(self):
-        raise NotImplementedError(
-            "It's not possible to fetch values from nothing"
-        )
+        raise NotImplementedError("It's not possible to fetch values from nothing")
 
     def get(self, key, default=None):
         return None
@@ -47,7 +42,7 @@ class NullCache(object):
 
 @implementer(ICacheManager)
 @adapter(INullCacheProvider)
-class NullCacheManager(object):
+class NullCacheManager:
     def __init__(self, context):
         pass
 
