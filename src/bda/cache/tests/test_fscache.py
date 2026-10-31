@@ -6,6 +6,7 @@ from bda.cache.interfaces import IFSCacheProvider
 from unittest import mock
 import os
 import shutil
+import sys
 import tempfile
 import time
 import unittest
@@ -66,6 +67,11 @@ class TestFSCacheInit(FSCacheTestCase):
         self.assertEqual(cache.size(), 0)
 
 
+@unittest.skipIf(
+    sys.platform == 'win32',
+    'FSCache does not work on Windows, which strips the trailing dot of the '
+    'cache file names.',
+)
 class TestFSCache(FSCacheTestCase):
     def setUp(self):
         super().setUp()

@@ -76,5 +76,8 @@ Dependencies
 Notes
 -----
 
+``bda.cache.fscache.FSCache`` does not work on Windows. It stores each key in
+a file with a trailing dot, which Windows strips from file names.
+
 If you're interessted to contribute; Feel free but keep in mind that this code
 is planned to be released under a BSD like licence in future.

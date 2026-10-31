@@ -4,7 +4,10 @@ Changes
 2.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Document that ``FSCache`` does not work on Windows. It stores each key in a
+  file with a trailing dot, which Windows strips from file names. Skip the
+  ``FSCache`` storage tests on Windows.
+  [rnix]
 
 
 2.0.0 (2026-10-31)
