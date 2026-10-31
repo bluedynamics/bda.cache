@@ -1,8 +1,8 @@
 Changes
--------
+=======
 
 2.0.0 (unreleased)
-~~~~~~~~~~~~~~~~~~
+------------------
 
 - Fix the client library selection in ``bda.cache.memcached`` if both
   ``libmc`` and ``pylibmc`` are installed. ``pylibmc.Client`` was initialized
@@ -40,14 +40,14 @@ Changes
 
 
 1.3.0 (2019-02-05)
-~~~~~~~~~~~~~~~~~~
+------------------
 
 - Python 3 comaptibility [reinhardt]
 
 - Code style (black/isort) [jensens]
 
 1.2.0 (2017-10-19)
-~~~~~~~~~~~~~~~~~~
+------------------
 
 - Change to use libmc or pylibmc when available
 
@@ -55,19 +55,19 @@ Changes
 
 
 1.1.2 (2009-02-10)
-~~~~~~~~~~~~~~~~~~
+------------------
 
 - remove legacy code
 
 
 1.1.1 (2009-02-10)
-~~~~~~~~~~~~~~~~~~
+------------------
 
 - bugfix in zcml configuration.
 
 
 1.1 (2009-02-09)
-~~~~~~~~~~~~~~~~
+----------------
 
 - Cache Managers are now adapters.
 
@@ -79,7 +79,7 @@ Changes
 
 
 1.0
-~~~
+---
 
 - Initial work
 
